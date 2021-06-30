@@ -1,0 +1,2 @@
+# Waze-2
+O projeto final trata-se de uma versão simplificada do Waze. Para essa aplicação somente a cidade do Rio de Janeiro é considerada. Os pontos e ruas da cidade são representados por um grafo, cujos nós e arestas foram extraidos da biblioteca osmnx, pelo Python. O programa pode consultar o menor caminho ou o caminho mais rápido através do Dijkstra ou A*. Além disso, para o A* é possível ver os pontos sendo considerados pelo algoritmo.
