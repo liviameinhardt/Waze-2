@@ -1,0 +1,139 @@
+Para rodar o projeto é necessário configurar um servidor que habilite scripts CGI;
+Para instalar e configurar o Apache no linux de forma a rodar o projeto, basta seguir as instruções a seguir:
+- OBS: utilizei o Ubuntu 20.04 -
+
+1. Instalando o Apache
+
+sudo apt update
+
+sudo apt install apache2
+
+2. Ajustando o Firewall 
+
+sudo ufw allow 'Apache'
+
+2.1 Verificar a mudança:
+sudo ufw status
+
+- Saida esperada: 
+Status: active
+
+To                         Action      From
+--                         ------      ----
+Apache                     ALLOW       Anywhere   
+Apache (v6)                ALLOW       Anywhere (v6)   
+
+
+3. Verificar a instalação
+sudo systemctl status apache2
+
+Output
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+     Active: active (running) since Thu 2020-04-23 22:36:30 UTC; 20h ago
+       Docs: https://httpd.apache.org/docs/2.4/
+   Main PID: 29435 (apache2)
+      Tasks: 55 (limit: 1137)
+     Memory: 8.0M
+     CGroup: /system.slice/apache2.service
+             ├─29435 /usr/sbin/apache2 -k start
+             ├─29437 /usr/sbin/apache2 -k start
+             └─29438 /usr/sbin/apache2 -k start
+
+3.1 Verificar no navegador 
+acesse: http://your_server_ip
+
+0BS: verifique seu ip com o comando hostname -I
+
+4. Configure o virtual host:
+
+cd /var/www/
+
+git clone https://github.com/EMAp-EDA-2021/final-project-grupo-2.git
+
+4.1 Permita que seu usuário edite os arquivos do repositorio 
+// mude user para o seu usuário
+
+sudo chown -R user final-project-grupo-2 
+
+4.2 Hablite headers para se conectar a API criada
+
+sudo a2enmod headers
+
+nano /etc/apache2/sites-available/final-project-grupo-2.conf
+
+dentro do arquivo cole:
+____________________________
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    ServerName final-project-grupo-2
+    ServerAlias www.final-project-grupo-2
+    DocumentRoot /var/www/final-project-grupo-2
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    Header set Access-Control-Allow-Origin "*"
+</VirtualHost>
+____________________________
+
+4.2 Habilite o arquivo .conf criado
+
+sudo a2ensite final-project-grupo-2.conf 
+
+4.3 Desabilite o arquivo .conf default
+
+sudo a2dissite 000-default.conf
+
+4.4 Verifique 
+
+sudo apache2ctl configtest
+
+Output
+Syntax OK
+
+4.5 Reinicie o Apache
+
+sudo systemctl restart apache2
+
+5. Configure o CGI
+
+sudo a2enmod cgid
+
+systemctl restart apache2
+
+5.1 Habilitar cgi no diretório do projeto
+
+sudo nano /etc/apache2/conf-available/cgi-enabled.conf
+
+cole:
+____________________________
+
+
+<Directory "/var/www/final-project-grupo-2/back_organizado">
+    Options +ExecCGI
+    AddHandler cgi-script .cgi .pl .py .rb
+</Directory>
+
+<Directory "/var/www/final-project-grupo-2/front">
+    Options +ExecCGI
+    AddHandler cgi-script .cgi .pl .py .rb
+</Directory>
+____________________________
+
+sudo a2enconf cgi-enabled
+
+systemctl restart apache2
+
+6. Crie o arquivo cgi:
+
+g++ -O main.cpp -o main.cgi
+
+7. Habilite o arquivo cgi do projeto:
+
+sudo chmod 755 /var/www/final-project-grupo-2/back_organizado/main.cgi
+
+Com isso, a aplicação deve funcionar corretamente
+
+
+
+
