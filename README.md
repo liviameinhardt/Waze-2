@@ -1,8 +1,6 @@
 # Mini Waze
 ### Final Project: Data Structures and Algorithms
 
-Para acessar a interface interativa basta clicar [aqui](http://104.41.25.156/front/).
-
 [Assita a apresentação](https://youtu.be/njsW6HlLDzc)
 
 ## Descrição
