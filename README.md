@@ -1,4 +1,6 @@
 # Mini Waze
+*Obs: O repositóio original encontra-se em uma organização privada do github*
+
 ### Final Project: Data Structures and Algorithms
 
 [Assita a apresentação](https://youtu.be/njsW6HlLDzc)
