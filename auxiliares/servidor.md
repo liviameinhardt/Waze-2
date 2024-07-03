@@ -1,15 +1,16 @@
-# Execução do projeto
-Há duas formas de executar o projeto. A primeira demanda que um servidor seja instalado e configurado na máquina. As etapas para configurar o Apache estão descritas abaixo. Outra opção é acessar a máquina virtual criada, em que o servidor já está instalado. Para acessar o projeto na máquina virtual basta clicar [aqui](http://104.41.25.156/front/). Para acessar os arquivos dentro da máquina virtual basta seguir os passos descritos [no fim desse documento](https://github.com/EMAp-EDA-2021/final-project-grupo-2/blob/main/auxiliares/servidor.md#máquina-virtual).
+# Project Execution
+
+There were two ways to run the project. The first method requires installing and configuring a server on your machine. The steps to configure Apache are described below. The project was also available on a virtual machine, but it is no longer available. For reference, the steps to access the files within the virtual machine were described [at the end of this document.](https://github.com/EMAp-EDA-2021/final-project-grupo-2/blob/main/auxiliares/servidor.md#máquina-virtual).
 
 
 
 # Instalação do servidor local 
 
-Para a execução correta do projeto, é necessária a instalação e configuração de um servidor com suporte de execução de scripts. Esse breve tutorial explica como instalar e configurar o Apache para executar scripts cgi no linux.
+To run the project correctly, it is necessary to install and configure a server that supports script execution. This brief tutorial explains how to install and configure Apache to execute CGI scripts on Linux.
 
-> Obs: Esses passos foram testados no Ubuntu 20.04
+> Note: These steps were tested on Ubuntu 20.04
 
-## Instação do Apache
+## Apache
 
 ```s
 sudo apt update
@@ -17,19 +18,20 @@ sudo apt update
 sudo apt install apache2
 ```
 
-## Ajustando o Firewall 
+## Adjusting the Firewall 
 
 ```s
 sudo ufw allow 'Apache'
 ```
 
-Após esse passo pode-ser verificar as permissões executando:
+After this step you can check the executed versions:
 
 ```s
 sudo ufw status
 ```
 
-A saída esperada deve ser:
+The expected output should be:
+
 ```s
 To                         Action      From
 --                         ------      ----
@@ -37,15 +39,15 @@ Apache                     ALLOW       Anywhere
 Apache (v6)                ALLOW       Anywhere (v6)   
 ```
 
-## Verifique a instalação
+## Check installation
 
-Execute:
+Run:
 
 ```s
 sudo systemctl status apache2
 ```
 
-A saída esperada deve ser:
+The expected output should be:
 ```s
 ● apache2.service - The Apache HTTP Server
      Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
@@ -60,18 +62,18 @@ A saída esperada deve ser:
              └─29438 /usr/sbin/apache2 -k start 
 ```
 
-Por fim, verifique o funcionamento do apache acessando http://ip_do_seu_servidor no navegador.
-Caso não saiba seu IP, basta executar:
+Finally, check that Apache is working by accessing http://your_server_ip in the browser.
+If you don't know your IP, just run:
 
 ```s
 hostname -I
 ```
 
-Você deve ver a página index padrão do Apache. 
+You should see the default Apache index page. 
 
-## Configurando o Virtual Host
+## Configuring Virtual Host
 
-Vá para o diretório de arquivos do Apache e clone o projeto:
+Go to your Apache files directory and clone the project:
 
 ```s
 cd /var/www/
@@ -79,23 +81,23 @@ cd /var/www/
 git clone https://github.com/EMAp-EDA-2021/final-project-grupo-2.git
 ```
 
-Para editar arquivos do projeto clonado, é necessário dar permissões ao seu usuário:
+To edit cloned project files, you must give your user permissions:
 
-> Troque *user* pelo seu usuário
+> Replace *user* with your username
 
 ```s
 sudo chown -R user final-project-grupo-2 
 ```
 
-## Configure o projeto
+## Configure the project
 
-Crie e acesse o arquivo de configuração do projeto:
+Create and access the project configuration file:
 
 ```s
 sudo nano /etc/apache2/sites-available/final-project-grupo-2.conf
 ```
 
-Cole as configurações:
+Paste the settings:
 
 ```s
 <VirtualHost *:80>
@@ -108,35 +110,37 @@ Cole as configurações:
 </VirtualHost>
 ```
 
-Habilite o arquivo criado e desabilite o arquivo default do Apache:
+Enable the created file and disable the default Apache file:
 
 ```s
 sudo a2ensite final-project-grupo-2.conf
 
 sudo a2dissite 000-default.conf
 ```
-Verfique a configuração:
+
+Check:
+
 ```s
 sudo apache2ctl configtest
 ```
-
-O Output desejado:
+The desired output:
 
 ```s
 Output
 Syntax OK
 ```
 
-Por fim, reinicie o Apache:
+Finally, restart Apache:
+
 
 ```s
 sudo systemctl restart apache2
 ```
 
-## Configuração do CGI
+## CGI Configuration
 
-Essa é a última e mais importante etapa de configuração do servidor. 
-Primeiramente, habilite o módulo para cgi e reinicie o Apache:
+This is the last and most important server configuration step. 
+First, enable the module for cgi and restart Apache:
 
 ```s
 sudo a2enmod cgid
@@ -144,14 +148,15 @@ sudo a2enmod cgid
 systemctl restart apache2
 ```
 
-Agora, habilite a execução de scripts no diretório do projeto. 
-Abra o arquivo de configurações do Apache:
+Now enable script execution in the project directory. 
+Open the Apache settings file:
 
 ```s
 sudo nano /etc/apache2/conf-available/cgi-enabled.conf
 ```
 
-Cole as configurações:
+Paste the settings:
+
 
 ```s
 <Directory "/var/www/final-project-grupo-2/back_organizado">
@@ -165,7 +170,7 @@ Cole as configurações:
 </Directory>
 ```
 
-Ative a configuração e reinicie o servidor:
+Activate the configuration and restart the server:
 
 ```s
 sudo a2enconf cgi-enabled
@@ -173,55 +178,62 @@ sudo a2enconf cgi-enabled
 systemctl restart apache2
 ```
 
-Por fim, habilite o programa:
+Finally, enable the program:
 
 ```s
 sudo chmod 755 /var/www/final-project-grupo-2/back_organizado/main.cgi
 ```
 
-## Observação
-Caso sejam feitas alterações em arquivos do backend, será necessário recompliar o programa através do comando:
+## Observation
+If changes are made to backend files, it will be necessary to rebuild the program using the command:
 
 ```s
 g++ -O main.cpp -o main.cgi
 ```
 
-Com isso, a aplicação deve funcionar normalmente. 
-Caso haja algum problema, foi criada uma máquina virtual em que o programa funciona corretamente. 
+With this setup, the application should work normally. If any issues arise, a virtual machine has been created where the program runs correctly.
 
-# Máquina Virtual
+# Virtual Machine
 
-É muito simples acessar a máquina tanto do linux quanto do Windows. Para ambos os sistemas, instala-se um programa chamado Putty. Seguem os passos a serem executados no linux:
+Accessing the virtual machine is very simple from both Linux and Windows. For both systems, you will need to install a program called Putty. Here are the steps to follow on Linux:
 
-## Instalando o Putty
+## Installing Putty
 
-Instale o programa:
+Install the program:
+
 ```s
 sudo apt-get update
 
 sudo apt-get install -y putty
 ```
-Acesse o Putty:
+
+Access Putty:
 
 ```s
 putty
 ```
 
-Deve aparecer uma nova janela, solicitando um Host Name ou IP:
+A new window should appear, asking for a Host Name or IP:
 
 ![alt text](putty_screen.png)
 
-Digite o IP:  `104.41.25.156`
+Enter the IP:  `104.41.25.156`
 
-O login e a senha foram enviados por email, junto com a entrega do trabalho, por razões de segurança. Após fazer login deve ser ver:
+The login and password were sent via email along with the project delivery for security reasons. After logging in, you should see:
 
 ![alt text](afterlogin.png)
 
-Agora basta segui para o diretório `cd /var/www/final*` e terá acesso aos arquivos dentro do servidor em funcionamento.
+Now simply navigate to the directory `cd /var/www/final*` to access the files within the running server.
 
-A máquina foi configurada como descrito acima e o acesso aos arquivos pode ser feito utilizando o comando `nano`. 
+The machine was configured as described above, and access to the files can be done using the nano command.
 
-O git está instalado na máquina. É necessário utilizar `sudo`  para executar comandos do git. 
+Git is installed on the machine. It is necessary to use `sudo` to execute git commands.
 
-Pode-se acessar a página clicando [aqui](http://104.41.25.156/front/).
+You can access the page by clicking [here](http://104.41.25.156/front/)
+
+
+
+
+
+
 
