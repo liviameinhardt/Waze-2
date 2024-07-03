@@ -1,15 +1,14 @@
 # Mini Waze
-*Obs: O repositóio original encontra-se em uma organização privada do github*
 
-### Final Project: Data Structures and Algorithms
+Developed as the final project for Data Structures and Algorithms.
 
-[Assita a apresentação](https://youtu.be/njsW6HlLDzc)
+[Watch the presentation](https://youtu.be/njsW6HlLDzc)
 
-## Descrição
+## Description
 
-O projeto final trata-se de uma versão simplificada do Waze. Para essa aplicação somente a cidade do Rio de Janeiro é considerada. Os pontos e ruas da cidade são representados por um grafo, cujos nós e arestas foram extraidos da biblioteca osmnx, pelo Python. O programa pode consultar o menor caminho ou o caminho mais rápido através do Dijkstra ou A*. Além disso, para o A* é possível ver os pontos sendo considerados pelo algortimo. 
+The final project is a simplified version of Waze. For this application, only the city of Rio de Janeiro is considered. The points and streets of the city are represented by a graph, whose nodes and edges were extracted from the `osmnx` library using Python. The program can query the shortest path or the fastest path using Dijkstra's or A* algorithms. Additionally, for A*, it is possible to visualize the points being considered by the algorithm.
 
-## Grupo
+## Group
 
 > Ari Oliveira
 
@@ -17,34 +16,28 @@ O projeto final trata-se de uma versão simplificada do Waze. Para essa aplicaç
 
 > Luiz Luz
 
-## Execução do programa
+## Program Execution
 
-Para executar o programa localmente é necessária a instalação de um servidor ou acessar a máquina virtual criada. Instruções para qualquer uma dessas opções podem ser encontradas [aqui](auxiliares/servidor.md).
+To run the program locally, you need to install a server. You can also access the created virtual machine. 
+Instructions for either option can be found [here](auxiliares/servidor.md).
 
-## Interação via Console
+## Console Interaction
 
-Caso deseje executar o programa via console basta executar o programa passando os padrâmetros:
-
+If you wish to run the program via console, simply execute the program with the following parameters:
 
 ```s
-./main.cgi "y1" "x1" "y2" "x2" "algoritmo" "tipo_de_rota"
+./main.cgi "y1" "x1" "y2" "x2" "algorithm" "route_type"
 ```
 Em que:
 
-* (y1,x1) é a coordenada do ponto de início
-* (y2,x2) é a coordenada do ponto final
-* algoritmo pode ser o A* [1] ou o Dijsktra [0]
-* tipo de rota pode ser a mais rápida [1] ou a mais curta [0]
+* `(y1,x1)` is the coordinate of the starting point
+* `(y2,x2)` is the coordinate of the ending point
+* `algorithm`  can be A* [1] or Dijkstra [0]
+* `route_type` can be the fastest [1] or the shortest [0]
 
-Exemplo:
-
-```s
-./main.cgi -22.905479 -43.168620 -22.894177 -43.679636 1 1
-```
-O comando executa o menor caminho entre as coordenadas dadas utilizando o A*.
-
-Obs: deve-se estar no diretório do programa para executa-lo. Ou seja, antes execute:
+For exemple:
 
 ```s
 cd /var/www/final*/back_organizado
+./main.cgi -22.905479 -43.168620 -22.894177 -43.679636 1 1
 ```
