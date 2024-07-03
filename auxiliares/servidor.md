@@ -1,8 +1,8 @@
 # Project Execution
 
-There were two ways to run the project. The first method requires installing and configuring a server on your machine. The steps to configure Apache are described below. The project was also available on a virtual machine, but it is no longer available. For reference, the steps to access the files within the virtual machine were described [at the end of this document.](https://github.com/EMAp-EDA-2021/final-project-grupo-2/blob/main/auxiliares/servidor.md#máquina-virtual).
+There were two ways to run the project. The first method requires installing and configuring a server on your machine. The steps to configure Apache are described below. The project was also available on a virtual machine, but it is no longer available. For reference, the steps to access the files within the virtual machine were described [at the end of this document.](https://github.com/EMAp-EDA-2021/final-project-grupo-2/blob/main/auxiliares/servidor.md#Virtual-Machine).
 
-
+  
 
 # Instalação do servidor local 
 
